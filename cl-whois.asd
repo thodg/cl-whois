@@ -37,7 +37,5 @@
   :depends-on ("babel"
 	       "usocket")
   :components
-  ((:module "src"
-	    :components
-	    ((:file "defpackage")
-	     (:file "client" :depends-on ("defpackage"))))))
+  ((:file "defpackage")
+   (:file "client" :depends-on ("defpackage"))))
