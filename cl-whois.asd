@@ -34,8 +34,7 @@
   :author "Thomas de Grivel <billitch@gmail.com>"
   :version "0.1"
   :description "WHOIS protocol in Common Lisp"
-  :depends-on ("babel"
-	       "usocket")
+  :depends-on ("usocket")
   :components
   ((:file "defpackage")
    (:file "client" :depends-on ("defpackage"))))
