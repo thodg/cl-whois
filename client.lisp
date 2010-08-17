@@ -26,12 +26,14 @@
 
 (in-package :cl-whois)
 
-(defun whois (name &key (server "whois.internic.net"))
-  (let ((socket (usocket:socket-connect server 43))
-	(msg (babel:string-to-octets (format nil "~A~C~C"
-					     name #\Newline
-					     #\Linefeed))))
-    (usocket:socket-send socket msg (length msg))
-    (usocket:socket-receive socket nil 8192)))
-
-(whois "lowh.net")
+(defun whois (name &key (server cl-whois.servers:whois.internic.net))
+  (let* ((socket (usocket:socket-connect server 43))
+	 (stream (usocket:socket-stream socket)))
+    (format stream "~A~C~C" name #\Newline #\Linefeed)
+    (finish-output stream)
+    (with-output-to-string (answer)
+      (loop
+	 with buffer = (make-array 8192 :element-type 'character)
+	 for length = (read-sequence buffer stream)
+	 until (zerop length)
+	 do (write-sequence buffer answer :end length)))))
